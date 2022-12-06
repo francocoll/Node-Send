@@ -7,13 +7,11 @@ const app = express()
 //conectar a la db
 conectarDB()
 
-
-console.log('Comenzando')
-
 //puerto de la app
 
 const port = process.env.PORT || 4000
 
+app.use(express.json())
 
 //Routing
 
