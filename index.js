@@ -16,6 +16,7 @@ app.use(express.json())
 //Routing
 
 app.use('/api/usuarios', require('./routes/usuarios'))
+app.use('/api/auth', require('./routes/auth'));
 
 // Arrancar la app
 
