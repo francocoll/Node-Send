@@ -1,11 +1,17 @@
 const Usuario = require('../models/Usuarios')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const { validationResult } = require('express-validator')
 require('dotenv').config({ path: 'variables.env' })
 
 exports.autenticarUsuario = async (req, res, next) => {
 
     //revisar si hay errores
+
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+        return res.status(400).json({ errores: errores.array() })
+    }
 
 
     //buscar el uaurio para ver si esta registrado
@@ -35,6 +41,19 @@ exports.autenticarUsuario = async (req, res, next) => {
 }
 
 
-exports.usuarioAutenticado = (req, res) => {
-
+exports.usuarioAutenticado = (req, res, next) => {
+    const authHeader = req.get('Authorization')
+    if (authHeader) {
+        //obtener token
+        const token = authHeader.split(' ')[1]
+        //comprobar jwt
+        try {
+            const usuario = jwt.verify(token, process.env.SECRETA)
+            res.json({ usuario })
+        } catch (error) {
+            console.log(error)
+            console.log('jwt no valido')
+        }
+    }
+    return next()
 }
