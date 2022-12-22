@@ -1,29 +1,37 @@
-const express = require('express')
-const conectarDB = require('./config/db')
+const express = require('express');
+const conectarDB = require('./config/db');
+const cors = require('cors');
 
-//crear server
-
-const app = express()
-
+// crear el servidor
+const app = express();
 
 
-//conectar a la db
-conectarDB()
+// Conectar a la base de datos
+conectarDB();
 
-//puerto de la app
+// Habilitar Cors
+const opcionesCors = {
+    origin: process.env.FRONTEND_URL
+}
+app.use( cors(opcionesCors) );
 
-const port = process.env.PORT || 4000
+// Puerto de la app
+const port = process.env.PORT || 4000;
 
-app.use(express.json())
+// Habilitar leer los valores de un body
+app.use( express.json() );
 
-//Routing
+// Habilitar carpeta publica
+app.use( express.static('uploads') );
 
-app.use('/api/usuarios', require('./routes/usuarios'))
+
+// Rutas de la app
+app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/enlaces', require('./routes/enlaces'));
+app.use('/api/archivos', require('./routes/archivos'));
 
 // Arrancar la app
-
 app.listen(port, '0.0.0.0', () => {
-    console.log(`El servidor funciona en el puerto ${port}`)
+    console.log(`El servidor esta funcionando en el puerto ${port}`);
 })
