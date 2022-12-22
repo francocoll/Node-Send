@@ -1,8 +1,11 @@
 const express = require('express')
 const conectarDB = require('./config/db')
+
 //crear server
 
 const app = express()
+
+
 
 //conectar a la db
 conectarDB()
@@ -17,6 +20,7 @@ app.use(express.json())
 
 app.use('/api/usuarios', require('./routes/usuarios'))
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/enlaces', require('./routes/enlaces'));
 
 // Arrancar la app
 
